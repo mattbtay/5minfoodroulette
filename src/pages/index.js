@@ -1,21 +1,50 @@
 import React from "react"
-import { Link } from "gatsby"
-
+import { useStaticQuery, graphql } from "gatsby"
+import { Container, Box, TextField } from "@material-ui/core"
+import Paper from "@material-ui/core/Paper"
+import { makeStyles } from "@material-ui/core/styles"
 import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+const IndexPage = () => {
+  const data = useStaticQuery(graphql`
+    query SiteDescriptionQuery {
+      site {
+        siteMetadata {
+          description
+        }
+      }
+    }
+  `)
+
+  const useStyles = makeStyles(theme => ({
+    main: {
+      padding: theme.spacing(3, 2),
+      marginTop: 15,
+    },
+  }))
+
+  const classes = useStyles()
+
+  return (
+    <Layout>
+      <Container maxWidth="md">
+        <Paper square={false} className={classes.main}>
+          {data.site.siteMetadata.description}
+          <Box className="box-wrapper">
+            <TextField
+              id="outlined-name"
+              label="Your Address"
+              className={null}
+              value=""
+              onChange={null}
+              margin="normal"
+              variant="outlined"
+            />
+          </Box>
+        </Paper>
+      </Container>
+    </Layout>
+  )
+}
 
 export default IndexPage

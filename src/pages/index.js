@@ -1,6 +1,6 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { Container, Box, TextField } from "@material-ui/core"
+import { Container, Box, TextField, Typography } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import Layout from "../components/layout"
@@ -11,6 +11,25 @@ const IndexPage = () => {
       site {
         siteMetadata {
           description
+        }
+      }
+      allDataJson {
+        edges {
+          node {
+            id
+            features {
+              properties {
+                EstablishmentType
+                FacilityName
+                Inspection
+                PropertyAddress
+                XCoord
+                YCoord
+                InspectionScore
+                InspectionDateText
+              }
+            }
+          }
         }
       }
     }
@@ -24,6 +43,10 @@ const IndexPage = () => {
   }))
 
   const classes = useStyles()
+
+  var rests = data.allDataJson.edges[0].node.features.filter(function(i) {
+    return i.properties.EstablishmentType === "Fast Food"
+  })
 
   return (
     <Layout>
@@ -41,6 +64,23 @@ const IndexPage = () => {
               variant="outlined"
             />
           </Box>
+          {rests.map(function(rest, i) {
+            return (
+              <Typography
+                variant="body1"
+                element="body1"
+                key={rest.properties.FacilityName + i}
+              >
+                {rest.properties.FacilityName}
+                <br />
+                {rest.properties.PropertyAddress}
+                <br />
+                Inspection Score: {rest.properties.InspectionScore}
+                <br />
+                <br />
+              </Typography>
+            )
+          })}
         </Paper>
       </Container>
     </Layout>

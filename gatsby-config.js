@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `5 Minutes to Food`,
+    title: `5 Minute Food Roulette`,
     description: `Looking for someplace to eat? Don't have much time? Search for a restaurant located within a 5 Minute walk from your current location.`,
     author: `@mattbtay`,
   },

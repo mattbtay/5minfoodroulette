@@ -15,7 +15,7 @@ import { Typography } from "@material-ui/core"
 import "typeface-roboto"
 
 import "./layout.css"
-import { strictEqual } from "assert"
+//import { strictEqual } from "assert"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`

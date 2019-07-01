@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `5 Minute Food Roulette`,
-    description: `Looking for someplace to eat? Don't have much time? Search for a restaurant located within a 5 Minute walk from your current location.`,
+    description: `Hey it's lunch time. But wait, you're like super busy or traffic looks bad? Take a spin and find something within a five minute walk!`,
     author: `@mattbtay`,
   },
   plugins: [

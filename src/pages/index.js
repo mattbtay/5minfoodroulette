@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { Container, Button, Typography } from "@material-ui/core"
-import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/core/styles"
+import { Button } from "@material-ui/core"
+import { useSpring, animated } from "react-spring"
 import Layout from "../components/layout"
 import loading from "../images/loading.svg"
+import Logo from "../images/logo.svg"
 
 const IndexPage = () => {
   const data = useStaticQuery(graphql`
@@ -38,20 +38,14 @@ const IndexPage = () => {
 
   const [Rest, setRest] = useState("")
   const [isLoading, setIsLoading] = useState(0)
+  const [Location, setLocation] = useState(0)
   const [List, setList] = useState(function() {
     return data.allDataJson.edges[0].node.features.filter(function(i) {
-      return i.properties.EstablishmentType === "Fast Food"
+      return i.properties.EstablishmentType === "Full Service Restaurant"
     })
   })
 
-  const useStyles = makeStyles(theme => ({
-    main: {
-      padding: theme.spacing(3, 2),
-      marginTop: 15,
-    },
-  }))
-
-  const classes = useStyles()
+  const props = useSpring({ opacity: 1, from: { opacity: 0 } })
 
   var options = {
     enableHighAccuracy: true,
@@ -84,7 +78,11 @@ const IndexPage = () => {
 
   // 1. get location of user
   var getLoc = function() {
+    //if (Location === false) {
     return navigator.geolocation.getCurrentPosition(success, error, options)
+    //} else {
+    //   return Location
+    //}
   }
 
   //2. get list of all restaurants
@@ -99,18 +97,25 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md">
-        <Paper square={false} className={classes.main}>
-          {data.site.siteMetadata.description}
+      <div className="page--wrap">
+        <div className="content--wrap">
+          <div className="main--logo">
+            <img className="logo" src={Logo} alt="logo" />
+            <h1 className="logo--text">5 Minute Lunch Roulette</h1>
+          </div>
 
-          <Button variant="contained" onClick={dataGrabber}>
-            Get Some Data
+          <p className="desc">{data.site.siteMetadata.description}</p>
+
+          <Button
+            variant="contained"
+            className="big-ole-button"
+            onClick={dataGrabber}
+          >
+            {!Rest.FacilityName ? "Lunch me!" : "Try again, please"}
           </Button>
-        </Paper>
+        </div>
         {Rest ? (
-          <Typography id="contentBox">
-            Chosen:
-            <br />
+          <animated.p className="contentBox" style={props}>
             {Rest.FacilityName}
             <br />
             {Rest.PropertyAddress}
@@ -118,13 +123,13 @@ const IndexPage = () => {
             {Rest.InspectionScore.length > 1
               ? `Last inspection score was ${Rest.InspectionScore} received on ${Rest.InspectionDateText}`
               : "Inspection pending"}
-          </Typography>
+          </animated.p>
         ) : isLoading ? (
           <img className="loading" src={loading} />
         ) : (
           ""
         )}
-      </Container>
+      </div>
     </Layout>
   )
 }

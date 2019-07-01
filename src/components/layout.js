@@ -7,8 +7,7 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-import "typeface-roboto"
+import SEO from "./seo"
 
 import "./layout.css"
 //import { strictEqual } from "assert"
@@ -16,6 +15,7 @@ import "./layout.css"
 const Layout = ({ children }) => {
   return (
     <>
+      <SEO title="hello" />
       <main className="wrap">{children}</main>
     </>
   )
